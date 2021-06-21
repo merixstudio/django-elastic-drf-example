@@ -2,12 +2,19 @@ version: '3'
 services:
 
   elasticsearch:
-    image: elasticsearch
+    image: elasticsearch:7.13.0
+    environment:
+      - discovery.type=single-node
     volumes:
       - data:/usr/share/elasticsearch/data
 
   postgres:
-    image: postgres
+    image: postgres:13.3-alpine
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - pg-data:/var/lib/postgresql/data
 
   django:
     container_name: elastic_drf_example_django
@@ -24,4 +31,5 @@ services:
       - elasticsearch
 
 volumes:
+  pg-data:
   data:
